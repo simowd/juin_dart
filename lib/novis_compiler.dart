@@ -1,4 +1,4 @@
-import 'package:novis_compiler/tokenizer.dart' as novis_tk;
+import 'package:novis_compiler/tokenizer.dart';
 import 'package:novis_compiler/parser.dart';
 
 /*
@@ -67,33 +67,30 @@ List<String> program = [
   'int b',
   'a = 5.5*b',
   'b = 100',
-  'if a<=b',
+  'if a <= b',
   'print "El resultado es: "',
   'print a',
+  'end',
   'else',
   'print "<=a&& 8"',
   'end'
-  'input martin'
+  'input martin',
+  'for i = 0 to 100',
+  'print i',
+  'end'
 ];
 
-compilar() {
+String compilar() {
 
-  //try {
+  try {
     var tokens = read(program);
     print(tokens);
     var arbol = parser(tokens);
     print(arbol['body'].length);
-  /*} catch (e) {
+  } catch (e) {
     print(e);
-  }*/
+  }
+
+  return '';
 }
 
-List<Map> read(List<String> program) {
-  var mapProgram = <Map<String, dynamic>>[];
-  for (var i = 0; i < program.length; i++) {
-    //print('Linea $i => ' + program[i]);
-    //print(novis_tk.tokenizer((program[i]).toString(), i));
-    mapProgram = novis_tk.tokenizer((program[i]).toString(), i);
-  }
-  return mapProgram;
-}

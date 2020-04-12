@@ -336,7 +336,7 @@ Map parser(List<Map> tokens) {
       if (token['value'] == 'end' ||
           token['value'] == 'else' ||
           token['value'] == 'to') {
-        throw ('Unexpected' + token['value'] + 'on line ' + token['line']);
+        throw ('Unexpected ' + token['value'] + ' on line ' + token['line']);
       }
     }
 
