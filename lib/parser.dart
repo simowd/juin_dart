@@ -61,7 +61,7 @@ Map parser(List<Map> tokens) {
       if (token['value'] == 'int') {
         token = copy[++current];
         if (token['type'] == 'var') {
-          token = copy[++current];
+          current++;
           return {'type': 'declare', 'build': 'int', 'value': token['value']};
         } else {
           throw ("Expected 'var' on line " +
@@ -76,7 +76,7 @@ Map parser(List<Map> tokens) {
       if (token['value'] == 'float') {
         token = copy[++current];
         if (token['type'] == 'var') {
-          token = copy[++current];
+          current++;
           return {'type': 'declare', 'build': 'float', 'value': token['value']};
         } else {
           throw ("Expected 'var' on line " +
@@ -90,7 +90,7 @@ Map parser(List<Map> tokens) {
       if (token['value'] == 'string') {
         token = copy[++current];
         if (token['type'] == 'var') {
-          token = copy[++current];
+          current++;
           return {
             'type': 'declare',
             'build': 'string',

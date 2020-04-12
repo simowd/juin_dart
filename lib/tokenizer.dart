@@ -28,12 +28,12 @@ List<Map<String, dynamic>> tokenizer (String line, int num_line) {
       continue;
     }
     if (char == '(') {
-      mapProgram.add({'type': 'punc', 'value': '(', 'line': num_line});
+      mapProgram.add({'type': 'punc', 'value': '(', 'line': num_line.toString()});
       c++;
       continue;
     }
     if (char == ')') {
-      mapProgram.add({'type': 'punc', 'value': ')', 'line': num_line});
+      mapProgram.add({'type': 'punc', 'value': ')', 'line': num_line.toString()});
       c++;
       continue;
     }
@@ -72,7 +72,7 @@ int readString(int c, String line, int num_line) {
       break;
     }
   }
-  mapProgram.add({'type': 'str', 'value': str, 'line': num_line});
+  mapProgram.add({'type': 'string', 'value': str, 'line': num_line.toString()});
   return c;
 }
 
@@ -100,17 +100,17 @@ int readVarKW(int c, String line, int num_line) {
       str += char;
       if (isKeyword(str)) {
         c++;
-        mapProgram.add({'type': 'kw', 'value': str, 'line': num_line});
+        mapProgram.add({'type': 'kw', 'value': str.trim(), 'line': num_line.toString()});
         break;
       }
       if (c == lgth) {
         c++;
-        mapProgram.add({'type': 'var', 'value': str, 'line': num_line});
+        mapProgram.add({'type': 'var', 'value': str.trim(), 'line': num_line.toString()});
         break;
       }
       c++;
     } else {
-      mapProgram.add({'type': 'var', 'value': str, 'line': num_line});
+      mapProgram.add({'type': 'var', 'value': str.trim(), 'line': num_line.toString()});
       break;
     }
   }
@@ -134,13 +134,13 @@ int readNumber(int c, String line, int num_line) {
       if (c == lgth) {
         c++;
         mapProgram
-            .add({'type': 'num', 'value': double.parse(str), 'line': num_line});
+            .add({'type': 'number', 'value': str, 'line': num_line.toString()});
         break;
       }
       c++;
     } else {
       mapProgram
-          .add({'type': 'num', 'value': double.parse(str), 'line': num_line});
+          .add({'type': 'number', 'value': str, 'line': num_line.toString()});
       break;
     }
   }
@@ -162,12 +162,12 @@ int readOperator(int c, String line, int num_line) {
       str += char;
       if (c == lgth) {
         c++;
-        mapProgram.add({'type': 'op', 'value': str, 'line': num_line});
+        mapProgram.add({'type': 'op', 'value': str.trim(), 'line': num_line.toString()});
         break;
       }
       c++;
     } else {
-      mapProgram.add({'type': 'op', 'value': str, 'line': num_line});
+      mapProgram.add({'type': 'op', 'value': str.trim(), 'line': num_line.toString()});
       break;
     }
   }
