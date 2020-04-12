@@ -20,7 +20,8 @@ List<Map> read(List<String> program) {
   for (var i = 0; i < program.length; i++) {
     //print('Linea $i => ' + program[i]);
     //print(novis_tk.tokenizer((program[i]).toString(), i));
-    mapProgram = tokenizer((program[i]).toString(), i);
+    var line = i+1;
+    mapProgram = tokenizer((program[i]).toString(), line);
   }
   return mapProgram;
 }

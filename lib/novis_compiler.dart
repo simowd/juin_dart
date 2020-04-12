@@ -70,27 +70,29 @@ List<String> program = [
   'if a <= b',
   'print "El resultado es: "',
   'print a',
-  'end',
   'else',
   'print "<=a&& 8"',
-  'end'
+  'end',
   'input martin',
   'for i = 0 to 100',
   'print i',
-  'end'
+  'end',
 ];
 
 String compilar() {
-
   try {
     var tokens = read(program);
     print(tokens);
     var arbol = parser(tokens);
     print(arbol['body'].length);
-  } catch (e) {
-    print(e);
+  } 
+  catch (e) {
+    if(e.toString().contains('RangeError')){
+      print('Expected end');
+    }
+    else{
+      print(e);
+    }
   }
-
   return '';
 }
-
