@@ -15,23 +15,37 @@ Map parser(List<Map> tokens) {
       token = tokens[++current];
       if (token['type'] == 'op' && token['value'] == '=') {
         token = tokens[++current];
-        if (token['type'] == 'string' ||
-            token['type'] == 'number' ||
-            token['type'] == 'var') {
-          current++;
-          return {
-            'type': 'assign',
-            'operator': '=',
-            'left': variable,
-            'right': token['value']
-          };
-        } else {
-          throw ('Expected on line ' +
-              copy[current]['line'] +
-              ' number or string but got ' +
-              token['value'] +
-              ' instead');
+
+        var linea = token['line'];
+        Map<String, dynamic> content = {
+          'type': 'assign',
+          'operator': '=',
+          'left': variable,
+          'right': []
+        };
+        while (token['line'] == linea) {
+          if (token['type'] == 'string' ||
+              token['type'] == 'number' ||
+              token['type'] == 'var' ||
+              token['type'] == 'punc' ||
+              token['type'] == 'op') {
+            content['right'].add(token);
+            if (current < copy.length - 1) {
+              token = copy[++current];
+            } else {
+              current++;
+              return content;
+            }
+          } else {
+            throw ('Expected on line ' +
+                copy[current]['line'] +
+                ' number or string but got ' +
+                token['value'] +
+                ' instead');
+          }
         }
+        //current++;
+        return content;
       } else {
         throw ("Expected '=' on line " +
             copy[current]['line'] +
@@ -99,6 +113,20 @@ Map parser(List<Map> tokens) {
             token['type'] == 'number') {
           current++;
           return {'type': 'output', 'value': token['value']};
+        } else {
+          throw ('Unexpected error on line ' +
+              copy[current]['line'] +
+              ' but got ' +
+              token['value'] +
+              ' instead');
+        }
+      }
+      //verify input
+      if (token['value'] == 'input') {
+        token = copy[++current];
+        if (token['type'] == 'var') {
+          current++;
+          return {'type': 'input', 'value': token['value']};
         } else {
           throw ('Unexpected error on line ' +
               copy[current]['line'] +
@@ -240,10 +268,83 @@ Map parser(List<Map> tokens) {
               ' instead');
         }
       }
-      //verify end,else and to
-      if(token['value'] == 'end' || token['value'] == 'else' || token['value'] == 'to'){
-        throw('Unexpected' + token['value'] + 'on line ' + token['line']);
+      //verify for
+      if (token['value'] == 'for') {
+        token = copy[++current];
+        Map<String, dynamic> parent = {
+          'type': 'forLoop',
+          'localVar': {},
+          'body': []
+        };
+        if (token['type'] == 'var') {
+          var varA = token;
+          token = copy[++current];
+          if (token['type'] == 'op' && token['value'] == '=') {
+            token = copy[++current];
+            if (token['type'] == 'number' || token['type'] == 'var') {
+              parent['localVar'] = {
+                'type': 'assign',
+                'operator': '=',
+                'left': varA,
+                'right': token['value']
+              };
+              token = copy[++current];
+              if (token['type'] == 'kw' && token['value'] == 'to') {
+                token = copy[++current];
+                if (token['type'] == 'number' || token['type'] == 'var') {
+                  parent['limit'] = token;
+                  token = copy[++current];
+                  while (token['value'] != 'end') {
+                    parent['body'].add(walk());
+                    token = copy[current];
+                  }
+                  token = copy[current];
+                  current++;
+                  return parent;
+                } else {
+                  throw ('Exptected var or number but got ' +
+                      token['type'] +
+                      ' on line ' +
+                      token['line']);
+                }
+              } else {
+                throw ('Exptected "to" but got ' +
+                    token['type'] +
+                    ' on line ' +
+                    token['line']);
+              }
+            } else {
+              throw ('Exptected var or number but got ' +
+                  token['type'] +
+                  ' on line ' +
+                  token['line']);
+            }
+          } else {
+            throw ('Exptected = but got ' +
+                token['type'] +
+                ' on line ' +
+                token['line']);
+          }
+        } else {
+          throw ('Exptected var but got ' +
+              token['type'] +
+              ' on line ' +
+              token['line']);
+        }
       }
+      //verify end,else and to
+      if (token['value'] == 'end' ||
+          token['value'] == 'else' ||
+          token['value'] == 'to') {
+        throw ('Unexpected' + token['value'] + 'on line ' + token['line']);
+      }
+    }
+
+    if (token['type'] == 'string' ||
+        token['type'] == 'number' ||
+        token['type'] == 'op' ||
+        token['type'] == 'string') {
+      throw ('Unexpected ' + token['type'] + ' on line ' + token['line']);
     }
   }
 
