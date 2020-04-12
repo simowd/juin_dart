@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 var mapProgram = <Map<String, dynamic>>[];
 var kw = [
   'int',
@@ -13,11 +15,11 @@ var kw = [
   'input'
 ];
 
-void tokenizer(String line, int num_line) {
+List<Map<String, dynamic>> tokenizer (String line, int num_line) {
   var c = 0;
   while (c < line.length) {
     var char = line[c];
-    print(char);
+    //print(char);
     if (char == '#') {
       break;
     }
@@ -54,7 +56,7 @@ void tokenizer(String line, int num_line) {
       throw('I can\'t read <' + char + '>');
     }
   }
-  print(mapProgram);
+  return(mapProgram);
 }
 
 int readString(int c, String line, int num_line) {
@@ -117,7 +119,7 @@ int readVarKW(int c, String line, int num_line) {
 
 bool isNumber(var char) {
   //final numeric = RegExp(r'\d');
-  final numeric = RegExp(r'^[0-9]+$');
+  final numeric = RegExp(r'^[0-9.]+$');
   return numeric.hasMatch(char);
 }
 
@@ -132,13 +134,13 @@ int readNumber(int c, String line, int num_line) {
       if (c == lgth) {
         c++;
         mapProgram
-            .add({'type': 'num', 'value': int.parse(str), 'line': num_line});
+            .add({'type': 'num', 'value': double.parse(str), 'line': num_line});
         break;
       }
       c++;
     } else {
       mapProgram
-          .add({'type': 'num', 'value': int.parse(str), 'line': num_line});
+          .add({'type': 'num', 'value': double.parse(str), 'line': num_line});
       break;
     }
   }

@@ -3,7 +3,7 @@ import 'package:novis_compiler/novis_compiler.dart' as novis_comp;
 List<String> program = [
   'int a',
   'int b',
-  'a = 5 + 2 (10*2)',
+  'a = 5.5*b',
   'b = 100',
   'if (a<=b)',
   'print "El resultado es: "',
