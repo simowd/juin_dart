@@ -1,8 +1,8 @@
-import 'package:novis_compiler/parser.dart';
-import 'package:petitparser/petitparser.dart';
+import 'package:novis_compiler/tokenizer.dart' as novis_tk;
 
-int calculate() {
-    final id = ((word().star() | string('<=').star() )).flatten();
-    print(id.matchesSkipping('if a<=5')); 
-  return 6 * 7;
+void read(List<String> program) {
+  for (var i = 0; i < program.length; i++) {
+    print('Linea $i => ' + program[i]);
+    novis_tk.tokenizer((program[i]).toString(), i);
+  }
 }

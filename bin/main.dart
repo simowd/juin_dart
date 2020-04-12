@@ -1,5 +1,18 @@
-import 'package:novis_compiler/novis_compiler.dart' as novis_compiler;
+import 'package:novis_compiler/novis_compiler.dart' as novis_comp;
 
-void main(List<String> arguments) {
-  print('Hello world: ${novis_compiler.calculate()}!');
+List<String> program = [
+  'int a',
+  'int b',
+  'a = 5 + 2 (10*2)',
+  'b = 100',
+  'if (a<=b)',
+  'print "El resultado es: "',
+  'print a',
+  'else',
+  'print <=a&& 8',
+  'input martin'
+];
+
+void main() {
+  novis_comp.read(program);
 }
