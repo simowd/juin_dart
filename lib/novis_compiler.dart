@@ -1,3 +1,4 @@
+import 'package:novis_compiler/interpreter.dart';
 import 'package:novis_compiler/tokenizer.dart';
 import 'package:novis_compiler/parser.dart';
 
@@ -64,27 +65,27 @@ import 'package:novis_compiler/parser.dart';
 */
 List<String> program = [
   'int a',
-  'int b',
-  'a = 5.5*b',
-  'b = 100',
-  'if a <= b',
-  'print "El resultado es: "',
+  'int c',
+  'c=0',
+  'a=0',
+  'while a<=10',
   'print a',
-  'else',
-  'print "<=a&& 8"',
+  'a=a+1',
+  'while c<=a',
+  'print c',
+  'c=c+1',
   'end',
-  'input martin',
-  'for i = 0 to 100',
-  'print i',
-  'end',
+  'end'
 ];
 
-String compilar() {
+List compile() {
+  var compiled = [];
   try {
     var tokens = read(program);
     print(tokens);
-    var arbol = parser(tokens);
-    print(arbol['body'].length);
+    var tree = parser(tokens);
+    compiled = interpreter(tree);
+    print(compiled);
   } 
   catch (e) {
     if(e.toString().contains('RangeError')){
@@ -94,5 +95,5 @@ String compilar() {
       print(e);
     }
   }
-  return '';
+  return compiled;
 }

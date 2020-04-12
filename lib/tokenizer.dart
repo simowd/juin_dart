@@ -160,7 +160,7 @@ int readNumber(int c, String line, int num_line) {
 }
 
 bool isOperator(var char) {
-  final numeric = RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%\s-]');
+  final numeric = RegExp(r'[!@#<>?":_`~;/[\]\\|=+)(*&^%\s-]');
   return numeric.hasMatch(char);
 }
 
