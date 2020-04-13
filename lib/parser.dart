@@ -286,7 +286,7 @@ Map parser(List<Map> tokens) {
                 'type': 'assign',
                 'operator': '=',
                 'left': varA,
-                'right': token['value']
+                'right': token
               };
               token = copy[++current];
               if (token['type'] == 'kw' && token['value'] == 'to') {

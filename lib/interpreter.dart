@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:petitparser/petitparser.dart';
 
 var variables = [];
-var local_var = [];
 var output_console = [];
 
 List interpreter(Map tree) {
@@ -27,10 +26,10 @@ void compile(List program) {
     if (exp['type'] == 'output') {
       output(exp);
     }
-    if (exp['type'] == 'whileLoop'){
+    if (exp['type'] == 'whileLoop') {
       whileLoop(exp);
     }
-    if (exp['type'] == 'forLoop'){
+    if (exp['type'] == 'forLoop') {
       forLoop(exp);
     }
   }
@@ -205,12 +204,62 @@ void output(Map exp) {
 }
 
 void whileLoop(Map exp) {
-  while (verifyCondition(exp['cond'])){
+  while (verifyCondition(exp['cond'])) {
     compile(exp['body']);
   }
 }
 
 void forLoop(Map exp) {
-
+  //create local variable i
+  if (exp['localVar']['left']['type'] == 'var') {
+    if (exp['localVar']['right']['type'] == 'number') {
+      variables.add({
+        'type': 'int',
+        'var': exp['localVar']['left']['value'],
+        'value': exp['localVar']['right']['value'],
+      });
+    } else {
+      if (exp['localVar']['right']['type'] == 'var') {
+        var pos = search_var(exp['localVar']['right']['value']);
+        if (pos != -1) {
+          variables.add({
+            'type': 'int',
+            'var': exp['localVar']['left']['value'],
+            'value': variables[pos]['value'],
+          });
+        } else {
+          throw (exp['localVar']['right']['value'] + ' Variable no declarada');
+        }
+      }
+    }
+  }
+  //loop through
+  var pos = search_var(exp['localVar']['left']['value']);
+  if (int.parse(variables[pos]['value'].toString().trim().replaceAll('"', '')) <
+      int.parse(exp['limit']['value'].toString().trim())) {
+    for (var i = int.parse(
+            variables[pos]['value'].toString().trim().replaceAll('"', ''));
+        i < int.parse(exp['limit']['value'].toString().trim());
+        i++) {
+      compile(exp['body']);
+      var pos = search_var(exp['localVar']['left']['value']);
+      variables[pos]['value'] = (i + 1).toString();
+    }
+  } else {
+    if (int.parse(
+            variables[pos]['value'].toString().trim().replaceAll('"', '')) >
+        int.parse(exp['limit']['value'].toString().trim())) {
+      for (var i = int.parse(
+              variables[pos]['value'].toString().trim().replaceAll('"', ''));
+          i > int.parse(exp['limit']['value'].toString().trim());
+          i--) {
+        compile(exp['body']);
+        var pos = search_var(exp['localVar']['left']['value']);
+        variables[pos]['value'] = (i - 1).toString();
+      }
+    }
+  }
+  pos = search_var(exp['localVar']['left']['value']);
+  variables.removeAt(pos);
 }
-//mauca martica juin cavil
+//juin
