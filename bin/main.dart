@@ -1,8 +1,8 @@
-import 'package:novis_compiler/novis_compiler.dart' as novis_comp;
+import 'package:juin_dart/juin_dart.dart' as juin;
 
 void main() {
   //Stopwatch stopwatch = new Stopwatch()..start();
-  novis_comp.compile();
+  juin.compile();
   //print('executed in ${stopwatch.elapsed}');
 }
 

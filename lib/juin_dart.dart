@@ -1,6 +1,6 @@
-import 'package:novis_compiler/interpreter.dart';
-import 'package:novis_compiler/tokenizer.dart';
-import 'package:novis_compiler/parser.dart';
+import 'package:juin_dart/interpreter.dart';
+import 'package:juin_dart/tokenizer.dart';
+import 'package:juin_dart/parser.dart';
 
 /*
     var tokens = [
